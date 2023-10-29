@@ -10,7 +10,7 @@ model_url = "https://tfhub.dev/tensorflow/faster_rcnn/inception_resnet_v2_640x64
 model = hub.load(model_url)
 
 # Загрузка изображения
-image_path = "lion.jpg"
+image_path = "Group-project/Lion.jpg"
 image = cv2.imread(image_path)
 
 # Подготовка изображения для обработки моделью
