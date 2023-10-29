@@ -1,13 +1,18 @@
-pip install git+https://github.com/huggingface/diffusers
-pip install transformers accelerate safetensors
-from diffusers import StableDiffusionXLPipeline
-import torch
-pipe = StableDiffusionXLPipeline.from_pretrained("segmind/SSD-1B", torch_dtype=torch.float16, use_safetensors=True, variant="fp16")
-pipe.to("cuda")
-prompt = "An astronaut riding a green horse" 
-neg_prompt = "ugly, blurry, poor quality" 
-image = pipe(prompt=prompt, negative_prompt=neg_prompt).images[0]
-export MODEL_NAME="segmind/SSD-1B"
-export INSTANCE_DIR="dog"
-export OUTPUT_DIR="lora-trained-xl"
-export VAE_PATH="madebyollin/sdxl-vae-fp16-fix"
+from tensorflow.keras.applications.resnet50 import ResNet50
+from tensorflow.keras.preprocessing import image
+from tensorflow.keras.applications.resnet50 import preprocess_input, decode_predictions
+import numpy as np
+
+model = ResNet50(weights='imagenet')
+
+img_path = 'elephant.jpg'
+img = image.load_img(img_path, target_size=(224, 224))
+x = image.img_to_array(img)
+x = np.expand_dims(x, axis=0)
+x = preprocess_input(x)
+
+preds = model.predict(x)
+# decode the results into a list of tuples (class, description, probability)
+# (one such list for each sample in the batch)
+print('Predicted:', decode_predictions(preds, top=3)[0])
+# Predicted: [(u'n02504013', u'Indian_elephant', 0.82658225), (u'n01871265', u'tusker', 0.1122357), (u'n02504458', u'African_elephant', 0.061040461)]
