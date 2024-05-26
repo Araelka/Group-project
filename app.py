@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import io
 import base64
 
+
 app = Flask(__name__)
 
 # Загрузка модели с TensorFlow Hub
